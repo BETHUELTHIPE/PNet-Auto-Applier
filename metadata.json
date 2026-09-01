@@ -1,0 +1,6 @@
+{
+  "name": "PNet Auto-Applier",
+  "description": "Automated job application system for PNet with direct email CV dispatch, portal login form auto-filling, Celery worker orchestration, and full Python/Django/Redis/PostgreSQL architecture.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
