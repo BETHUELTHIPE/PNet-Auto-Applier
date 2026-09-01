@@ -175,6 +175,11 @@ export const CeleryFlowerDashboard: React.FC<CeleryFlowerDashboardProps> = ({
             </span>
           )}
 
+          <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono bg-neutral-900 border border-neutral-800 text-neutral-300">
+            <span className="text-neutral-500">Auth:</span>
+            <span className="text-emerald-400 font-semibold">bethuelmoukangwe8@gmail.com</span>
+          </div>
+
           <button
             id="flower-refresh-btn"
             onClick={handleRefresh}
@@ -776,13 +781,13 @@ export const CeleryFlowerDashboard: React.FC<CeleryFlowerDashboardProps> = ({
                 <div className="flex items-center justify-between text-neutral-400">
                   <span className="text-emerald-400 font-bold">GET /api/workers</span>
                   <button
-                    onClick={() => handleCopy('curl -u admin:admin123 http://localhost:5555/api/workers', 'curl-workers')}
+                    onClick={() => handleCopy('curl -u bethuelmoukangwe8@gmail.com:23498812 http://localhost:5555/api/workers', 'curl-workers')}
                     className="text-[10px] text-neutral-400 hover:text-white"
                   >
                     {copiedText === 'curl-workers' ? 'Copied' : 'Copy cURL'}
                   </button>
                 </div>
-                <pre className="text-neutral-300 text-[11px]">curl -u admin:admin123 http://localhost:5555/api/workers</pre>
+                <pre className="text-neutral-300 text-[11px]">curl -u bethuelmoukangwe8@gmail.com:23498812 http://localhost:5555/api/workers</pre>
               </div>
 
               {/* Endpoint 2: Revoke Task */}
@@ -790,13 +795,13 @@ export const CeleryFlowerDashboard: React.FC<CeleryFlowerDashboardProps> = ({
                 <div className="flex items-center justify-between text-neutral-400">
                   <span className="text-rose-400 font-bold">POST /api/task/revoke/:id</span>
                   <button
-                    onClick={() => handleCopy('curl -X POST -u admin:admin123 http://localhost:5555/api/task/revoke/TASK_UUID?terminate=true', 'curl-revoke')}
+                    onClick={() => handleCopy('curl -X POST -u bethuelmoukangwe8@gmail.com:23498812 http://localhost:5555/api/task/revoke/TASK_UUID?terminate=true', 'curl-revoke')}
                     className="text-[10px] text-neutral-400 hover:text-white"
                   >
                     {copiedText === 'curl-revoke' ? 'Copied' : 'Copy cURL'}
                   </button>
                 </div>
-                <pre className="text-neutral-300 text-[11px]">curl -X POST -u admin:admin123 "http://localhost:5555/api/task/revoke/TASK_UUID?terminate=true"</pre>
+                <pre className="text-neutral-300 text-[11px]">curl -X POST -u bethuelmoukangwe8@gmail.com:23498812 "http://localhost:5555/api/task/revoke/TASK_UUID?terminate=true"</pre>
               </div>
 
               {/* Endpoint 3: Autoscale Pool */}
@@ -804,13 +809,13 @@ export const CeleryFlowerDashboard: React.FC<CeleryFlowerDashboardProps> = ({
                 <div className="flex items-center justify-between text-neutral-400">
                   <span className="text-indigo-400 font-bold">POST /api/worker/pool/grow/:worker_name</span>
                   <button
-                    onClick={() => handleCopy('curl -X POST -u admin:admin123 http://localhost:5555/api/worker/pool/grow/celery@worker_email_node_01?n=2', 'curl-grow')}
+                    onClick={() => handleCopy('curl -X POST -u bethuelmoukangwe8@gmail.com:23498812 http://localhost:5555/api/worker/pool/grow/celery@worker_email_node_01?n=2', 'curl-grow')}
                     className="text-[10px] text-neutral-400 hover:text-white"
                   >
                     {copiedText === 'curl-grow' ? 'Copied' : 'Copy cURL'}
                   </button>
                 </div>
-                <pre className="text-neutral-300 text-[11px]">curl -X POST -u admin:admin123 "http://localhost:5555/api/worker/pool/grow/celery@worker_email_node_01?n=2"</pre>
+                <pre className="text-neutral-300 text-[11px]">curl -X POST -u bethuelmoukangwe8@gmail.com:23498812 "http://localhost:5555/api/worker/pool/grow/celery@worker_email_node_01?n=2"</pre>
               </div>
 
             </div>

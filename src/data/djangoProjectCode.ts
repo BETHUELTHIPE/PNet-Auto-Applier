@@ -155,7 +155,26 @@ services:
       - pnet_network
 
   # ==========================================
-  # 6. Celery Prometheus Metrics Exporter
+  # 6. Celery Flower Real-Time Monitor
+  # ==========================================
+  flower:
+    image: mher/flower:2.0.1
+    container_name: pnet_celery_flower
+    restart: always
+    command: celery -A pnet_bot flower --port=5555 --basic_auth=bethuelmoukangwe8@gmail.com:23498812
+    ports:
+      - "5555:5555"
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - FLOWER_BASIC_AUTH=bethuelmoukangwe8@gmail.com:23498812
+      - FLOWER_PORT=5555
+    depends_on:
+      - redis
+    networks:
+      - pnet_network
+
+  # ==========================================
+  # 7. Celery Prometheus Metrics Exporter
   # ==========================================
   celery_exporter:
     image: danihodovic/celery-prometheus-exporter:latest
