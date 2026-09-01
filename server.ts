@@ -269,8 +269,9 @@ app.get('/api/celery/status', (req, res) => {
       processedTotal: 550,
     },
     database: {
-      type: 'PostgreSQL 16 (pnet_db)',
+      type: 'PostgreSQL 16 (pnetdb)',
       host: 'postgres:5432',
+      url: process.env.DATABASE_URL || 'postgresql://postgres:23498812@postgres:5432/pnetdb',
       status: 'HEALTHY',
     },
     workers: [

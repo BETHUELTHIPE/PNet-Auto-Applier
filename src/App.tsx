@@ -53,7 +53,7 @@ export default function App() {
   const [taskLogs, setTaskLogs] = useState<CeleryTaskLog[]>(initialTaskLogs);
   const [activeLogs, setActiveLogs] = useState<string[]>([
     '[CELERY BEAT] Initialized periodic schedule in django_celery_beat.schedulers:DatabaseScheduler',
-    '[POSTGRESQL] Verified connection pool with pnet_db on postgres:5432',
+    '[POSTGRESQL] Verified connection pool with pnetdb on postgres:5432 (user: postgres)',
     '[REDIS BROKER] Worker queues listening: pnet_discovery_queue, email_dispatch_queue, portal_apply_queue'
   ]);
 

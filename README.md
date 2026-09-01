@@ -52,6 +52,7 @@ Built with a full-stack architecture combining a **React 19 & TypeScript fronten
    SMTP_PASS=your_app_password
    SMTP_FROM_NAME=AMARIS Learning HUB
    SMTP_FROM_EMAIL=bethuelmoukangwe8@gmail.com
+   DATABASE_URL=postgresql://postgres:23498812@postgres:5432/pnetdb
    ```
 
 4. **Start the development server**:

@@ -38,9 +38,9 @@ services:
     container_name: pnet_postgres
     restart: always
     environment:
-      POSTGRES_DB: \${POSTGRES_DB:-pnet_db}
-      POSTGRES_USER: \${POSTGRES_USER:-pnet_user}
-      POSTGRES_PASSWORD: \${POSTGRES_PASSWORD:-pnet_secure_pass123}
+      POSTGRES_DB: \${POSTGRES_DB:-pnetdb}
+      POSTGRES_USER: \${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: \${POSTGRES_PASSWORD:-23498812}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -48,7 +48,7 @@ services:
     networks:
       - pnet_network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U \${POSTGRES_USER:-pnet_user} -d \${POSTGRES_DB:-pnet_db}"]
+      test: ["CMD-SHELL", "pg_isready -U \${POSTGRES_USER:-postgres} -d \${POSTGRES_DB:-pnetdb}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -90,7 +90,7 @@ services:
     environment:
       - DEBUG=0
       - SECRET_KEY=\${DJANGO_SECRET_KEY:-django-insecure-pnet-production-key-998877}
-      - DATABASE_URL=postgres://pnet_user:pnet_secure_pass123@postgres:5432/pnet_db
+      - DATABASE_URL=postgresql://postgres:23498812@postgres:5432/pnetdb
       - REDIS_URL=redis://redis:6379/0
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
@@ -118,7 +118,7 @@ services:
       - .:/app
       - media_volume:/app/media
     environment:
-      - DATABASE_URL=postgres://pnet_user:pnet_secure_pass123@postgres:5432/pnet_db
+      - DATABASE_URL=postgresql://postgres:23498812@postgres:5432/pnetdb
       - REDIS_URL=redis://redis:6379/0
       - CELERY_BROKER_URL=redis://redis:6379/0
       - GEMINI_API_KEY=\${GEMINI_API_KEY}
@@ -143,7 +143,7 @@ services:
     volumes:
       - .:/app
     environment:
-      - DATABASE_URL=postgres://pnet_user:pnet_secure_pass123@postgres:5432/pnet_db
+      - DATABASE_URL=postgresql://postgres:23498812@postgres:5432/pnetdb
       - REDIS_URL=redis://redis:6379/0
       - CELERY_BROKER_URL=redis://redis:6379/0
     depends_on:
@@ -194,7 +194,7 @@ services:
     container_name: pnet_postgres_exporter
     restart: always
     environment:
-      - DATA_SOURCE_NAME=postgresql://pnet_user:pnet_secure_pass123@postgres:5432/pnet_db?sslmode=disable
+      - DATA_SOURCE_NAME=postgresql://postgres:23498812@postgres:5432/pnetdb?sslmode=disable
     ports:
       - "9187:9187"
     depends_on:
@@ -668,7 +668,7 @@ WSGI_APPLICATION = 'pnet_bot.wsgi.application'
 # PostgreSQL Database Configuration
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL', 'postgres://pnet_user:pnet_secure_pass123@postgres:5432/pnet_db'),
+        default=os.environ.get('DATABASE_URL', 'postgresql://postgres:23498812@postgres:5432/pnetdb'),
         conn_max_age=600,
         ssl_require=False,
         engine='django_prometheus.db.backends.postgresql'

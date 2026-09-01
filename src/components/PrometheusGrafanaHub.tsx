@@ -123,7 +123,7 @@ export const PrometheusGrafanaHub: React.FC<PrometheusGrafanaHubProps> = ({ onOp
       state: 'UP',
       lastScrape: '2s ago',
       scrapeDuration: '18.9ms',
-      labels: { app: 'postgresql', database: 'pnet_db' }
+      labels: { app: 'postgresql', database: 'pnetdb' }
     },
     {
       job: 'nginx_ingress',
@@ -234,7 +234,7 @@ export const PrometheusGrafanaHub: React.FC<PrometheusGrafanaHubProps> = ({ onOp
         ];
       } else if (q.includes('pg_stat_database')) {
         results = [
-          { metric: { __name__: 'pg_stat_database_numbackends', datname: 'pnet_db', instance: 'pnet_postgres:5432' }, value: [timestamp, '19'] }
+          { metric: { __name__: 'pg_stat_database_numbackends', datname: 'pnetdb', instance: 'pnet_postgres:5432' }, value: [timestamp, '19'] }
         ];
       } else if (q.includes('redis_memory')) {
         results = [

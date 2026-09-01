@@ -70,6 +70,7 @@ All services communicate over the isolated internal bridge network \`pnet_networ
    GEMINI_API_KEY=your_gemini_api_key
    EMAIL_HOST_USER=bethuelmoukangwe8@gmail.com
    EMAIL_HOST_PASSWORD=upzp vwnw hhwo dzio
+   DATABASE_URL=postgresql://postgres:23498812@postgres:5432/pnetdb
    \`\`\`
 
 3. Build and boot the entire stack in the same network:
