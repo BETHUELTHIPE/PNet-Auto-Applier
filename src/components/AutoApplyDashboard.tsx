@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { PNetJob, UserProfile, AutoApplyConfig, CeleryWorkerNode, CeleryTaskLog } from '../types';
 import { ApplicationAnalyticsChart } from './ApplicationAnalyticsChart';
+import { Applications30DayTrendChart } from './Applications30DayTrendChart';
 
 interface AutoApplyDashboardProps {
   jobs: PNetJob[];
@@ -54,6 +55,8 @@ export const AutoApplyDashboard: React.FC<AutoApplyDashboardProps> = ({
 
   const emailEligibleCount = newJobs.filter(j => j.applyType === 'email' || j.applyType === 'both').length;
   const portalEligibleCount = newJobs.filter(j => j.applyType === 'portal' || j.applyType === 'both').length;
+
+  const [analyticsTab, setAnalyticsTab] = useState<'trend30d' | 'success_match'>('trend30d');
 
   return (
     <div className="space-y-6">
@@ -204,8 +207,49 @@ export const AutoApplyDashboard: React.FC<AutoApplyDashboardProps> = ({
 
       </div>
 
-      {/* Application Success Rates & Job Match Quality Analytics (Recharts) */}
-      <ApplicationAnalyticsChart jobs={jobs} />
+      {/* Analytics Navigation Header & Recharts Visualizations */}
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-neutral-900/60 p-3 rounded-2xl border border-neutral-800">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-white uppercase tracking-wider font-mono flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              Recharts Telemetry
+            </span>
+            <span className="text-xs text-neutral-400">| South African Job Application Metrics</span>
+          </div>
+
+          <div className="flex items-center bg-neutral-950 p-1 rounded-xl border border-neutral-800 text-xs">
+            <button
+              type="button"
+              onClick={() => setAnalyticsTab('trend30d')}
+              className={`px-3.5 py-1.5 rounded-lg font-medium transition-all ${
+                analyticsTab === 'trend30d'
+                  ? 'bg-emerald-600 text-white shadow-sm font-semibold'
+                  : 'text-neutral-400 hover:text-white'
+              }`}
+            >
+              📈 30-Day Applications Sent Trend
+            </button>
+            <button
+              type="button"
+              onClick={() => setAnalyticsTab('success_match')}
+              className={`px-3.5 py-1.5 rounded-lg font-medium transition-all ${
+                analyticsTab === 'success_match'
+                  ? 'bg-indigo-600 text-white shadow-sm font-semibold'
+                  : 'text-neutral-400 hover:text-white'
+              }`}
+            >
+              🎯 Success Rates & Match Scores
+            </button>
+          </div>
+        </div>
+
+        {analyticsTab === 'trend30d' ? (
+          <Applications30DayTrendChart jobs={jobs} />
+        ) : (
+          <ApplicationAnalyticsChart jobs={jobs} />
+        )}
+      </div>
 
       {/* Main Dual View: Live Terminal Stream & Pending Ready Jobs */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
