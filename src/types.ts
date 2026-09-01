@@ -2,6 +2,21 @@ export type ApplyMethod = 'email' | 'portal' | 'both';
 export type JobStatus = 'new' | 'queued' | 'applying' | 'applied_email' | 'applied_portal' | 'failed' | 'skipped';
 export type CeleryTaskStatus = 'PENDING' | 'STARTED' | 'SUCCESS' | 'FAILURE' | 'RETRY';
 
+export type AuthWorkflowStep = 'register' | 'verify_login' | 'dashboard';
+
+export interface AuthUser {
+  id: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  role: string;
+  isVerified: boolean;
+  registeredAt: string;
+  lastLogin: string;
+  token?: string;
+  verificationCode?: string;
+}
+
 export interface ScreeningQuestion {
   id: string;
   question: string;

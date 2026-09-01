@@ -9,6 +9,7 @@ import { CredentialsAndSmtp } from './components/CredentialsAndSmtp';
 import { DjangoArchitectureCenter } from './components/DjangoArchitectureCenter';
 import { PrometheusGrafanaHub } from './components/PrometheusGrafanaHub';
 import { DjangoAdminStudio } from './components/DjangoAdminStudio';
+import { AuthWorkflowStudio } from './components/AuthWorkflowStudio';
 import { JobApplyModal } from './components/JobApplyModal';
 import { 
   initialProfile, 
@@ -19,10 +20,28 @@ import {
   initialCeleryWorkers, 
   initialTaskLogs 
 } from './data/mockData';
-import { PNetJob, UserProfile, PNetCredentials, SmtpSettings, AutoApplyConfig, CeleryWorkerNode, CeleryTaskLog } from './types';
+import { PNetJob, UserProfile, PNetCredentials, SmtpSettings, AutoApplyConfig, CeleryWorkerNode, CeleryTaskLog, AuthUser } from './types';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
+  
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(() => {
+    const saved = localStorage.getItem('pnet_auth_user');
+    if (saved) return JSON.parse(saved);
+    return {
+      id: 'usr-admin-01',
+      fullName: 'Russia Bethuel Moukangwe',
+      email: 'bethuelmoukangwe8@gmail.com',
+      phone: '+27 71 415 6665',
+      role: 'Senior Python / Django & Data Engineer',
+      isVerified: true,
+      registeredAt: '2026-09-01T08:00:00Z',
+      lastLogin: new Date().toISOString(),
+      token: 'jwt-pnet-auth-session-active',
+    };
+  });
+
+  const [showWorkflowModal, setShowWorkflowModal] = useState(false);
   
   const [profile, setProfile] = useState<UserProfile>(() => {
     const saved = localStorage.getItem('pnet_user_profile');
@@ -82,6 +101,35 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('pnet_jobs_feed', JSON.stringify(jobs));
   }, [jobs]);
+
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem('pnet_auth_user', JSON.stringify(currentUser));
+    }
+  }, [currentUser]);
+
+  const handleAuthSuccess = (user: AuthUser) => {
+    setCurrentUser(user);
+    setProfile(prev => ({
+      ...prev,
+      fullName: user.fullName || prev.fullName,
+      email: user.email || prev.email,
+      phone: user.phone || prev.phone,
+    }));
+    setSmtpSettings(prev => ({
+      ...prev,
+      fromEmail: user.email || prev.fromEmail,
+      username: user.email || prev.username,
+      fromName: 'AMARIS Learning HUB',
+    }));
+    setPNetCredentials(prev => ({
+      ...prev,
+      email: user.email || prev.email,
+    }));
+    addLog(`[AUTH WORKFLOW] Candidate ${user.fullName} successfully verified email (${user.email}) and unlocked Dashboard.`);
+    setActiveTab('dashboard');
+    setShowWorkflowModal(false);
+  };
 
   const addLog = (msg: string) => {
     const timestamp = new Date().toLocaleTimeString('en-GB');
@@ -411,11 +459,20 @@ export default function App() {
         toggleAutoApply={toggleAutoApply}
         pendingCount={pendingJobsCount}
         appliedToday={config.appliedToday}
+        currentUser={currentUser}
+        onOpenWorkflow={() => setActiveTab('workflow')}
       />
 
       {/* Main Content View Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
         
+        {activeTab === 'workflow' && (
+          <AuthWorkflowStudio
+            currentUser={currentUser}
+            onAuthSuccess={handleAuthSuccess}
+          />
+        )}
+
         {activeTab === 'dashboard' && (
           <AutoApplyDashboard
             jobs={jobs}

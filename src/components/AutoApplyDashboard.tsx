@@ -18,6 +18,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { PNetJob, UserProfile, AutoApplyConfig, CeleryWorkerNode, CeleryTaskLog } from '../types';
+import { ApplicationAnalyticsChart } from './ApplicationAnalyticsChart';
 
 interface AutoApplyDashboardProps {
   jobs: PNetJob[];
@@ -78,6 +79,10 @@ export const AutoApplyDashboard: React.FC<AutoApplyDashboardProps> = ({
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-2 text-xs text-neutral-400">
+              <span className="flex items-center gap-1.5 bg-emerald-950/40 px-2.5 py-1 rounded-md border border-emerald-800/60 text-emerald-300 font-mono">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                Verified Email: <strong className="text-white">{profile.email}</strong>
+              </span>
               <span className="flex items-center gap-1.5 bg-neutral-800/80 px-2.5 py-1 rounded-md border border-neutral-700/60 text-neutral-300">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
                 CV: <strong className="text-white font-mono">{profile.cvFileName}</strong>
@@ -198,6 +203,9 @@ export const AutoApplyDashboard: React.FC<AutoApplyDashboardProps> = ({
         </div>
 
       </div>
+
+      {/* Application Success Rates & Job Match Quality Analytics (Recharts) */}
+      <ApplicationAnalyticsChart jobs={jobs} />
 
       {/* Main Dual View: Live Terminal Stream & Pending Ready Jobs */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">

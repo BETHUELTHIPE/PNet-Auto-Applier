@@ -8,14 +8,15 @@ import {
   Code2, 
   Play, 
   Square, 
-  CheckCircle2,
-  Clock,
-  Sparkles,
-  Activity,
-  BarChart3,
-  Shield
+  CheckCircle2, 
+  Clock, 
+  Sparkles, 
+  Activity, 
+  Shield,
+  Fingerprint,
+  UserCheck
 } from 'lucide-react';
-import { AutoApplyConfig } from '../types';
+import { AutoApplyConfig, AuthUser } from '../types';
 
 interface NavbarProps {
   activeTab: string;
@@ -24,6 +25,8 @@ interface NavbarProps {
   toggleAutoApply: () => void;
   pendingCount: number;
   appliedToday: number;
+  currentUser: AuthUser | null;
+  onOpenWorkflow: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -32,10 +35,13 @@ export const Navbar: React.FC<NavbarProps> = ({
   config,
   toggleAutoApply,
   pendingCount,
-  appliedToday
+  appliedToday,
+  currentUser,
+  onOpenWorkflow
 }) => {
   const tabs = [
     { id: 'dashboard', label: 'Auto-Apply Hub', icon: Bot },
+    { id: 'workflow', label: 'Workflow (Auth & Verify)', icon: Fingerprint, badge: currentUser?.isVerified ? 'Verified' : 'Step 1-2', highlightColor: 'emerald' },
     { id: 'django-admin', label: 'Django Admin CMS', icon: Shield, badge: 'Models & CVs', highlightColor: 'teal' },
     { id: 'jobs', label: 'PNet Job Scanner', icon: Briefcase, badge: pendingCount > 0 ? pendingCount : undefined },
     { id: 'celery', label: 'Celery & Flower Admin', icon: Cpu, badge: '5555' },
@@ -107,11 +113,40 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           </div>
 
-          {/* Right Action: Gemini Status */}
+          {/* Right Action: Verified Candidate Status & Workflow Trigger */}
           <div className="flex items-center gap-2.5">
-            <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium">
+            {currentUser?.isVerified ? (
+              <button
+                type="button"
+                onClick={onOpenWorkflow}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-neutral-950 border border-neutral-800 hover:border-neutral-700 transition-all text-left"
+                title="Click to view Workflow details"
+              >
+                <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xs font-bold">
+                  ✓
+                </div>
+                <div className="hidden sm:block">
+                  <div className="flex items-center gap-1">
+                    <span className="text-xs font-bold text-white max-w-[130px] truncate">{currentUser.fullName}</span>
+                    <span className="text-[9px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-1.5 py-0.2 rounded-full font-mono">Verified</span>
+                  </div>
+                  <div className="text-[10px] text-neutral-400 font-mono truncate max-w-[140px]">{currentUser.email}</div>
+                </div>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={onOpenWorkflow}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-lg shadow-indigo-600/30 transition-all"
+              >
+                <UserCheck className="w-3.5 h-3.5" />
+                <span>1) Register & 2) Log In</span>
+              </button>
+            )}
+
+            <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium">
               <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-              <span>Gemini 3.7 AI Tailor</span>
+              <span>Gemini 3.7</span>
             </div>
           </div>
         </div>
@@ -136,7 +171,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span>{tab.label}</span>
                 {tab.badge !== undefined && (
                   <span className={`ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
-                    tab.badge === 'Live' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-indigo-500 text-white'
+                    tab.badge === 'Live' 
+                      ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' 
+                      : tab.badge === 'Verified'
+                      ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                      : 'bg-indigo-500 text-white'
                   }`}>
                     {tab.badge}
                   </span>
@@ -154,3 +193,4 @@ export const Navbar: React.FC<NavbarProps> = ({
     </header>
   );
 };
+
